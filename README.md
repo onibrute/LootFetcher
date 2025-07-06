@@ -35,15 +35,25 @@ The project integrates real-time gameplay events, local session tracking, and mo
 
 ---
 
+
 ## 📂 Architecture Overview
 
+                  +-------------------+
+                  |   WoW Lua Addon   |
+                  | (Interface/AddOns)|
+                  +-------------------+
+                           |
+                           v
+             +------------------------------+
+             | LootLogger.lua (SavedVariables) |
+             +------------------------------+
+                           |
+                           v
+         +----------------------------------------+
+         | WoWFetch Desktop App (JavaFX + LuaJ)   |
+         | - Parses .lua file                     |
+         | - Displays data in UI                  |
+         | - Saves sessions in SQLite             |
+         | - Requests item metadata via API       |
+         +----------------------------------------+
 
-+-------------------+        +----------------------------+
-| WoW Lua Addon     |        | WoWFetch Desktop App       |
-| (Interface/AddOns)| ---->  | (JavaFX + LuaJ)            |
-+-------------------+        +----------------------------+
-           |                                |
-           v                                v
-   LootLogger.lua file          Parses loot data, displays in UI
-                                Saves sessions in SQLite
-                                Requests item metadata via API
