@@ -1,0 +1,84 @@
+.root {
+    -fx-font-family: "Verdana";
+    -fx-base: #002B5C; /* culoare primară de fundal */
+    -fx-background: #001f3f;
+    -fx-accent: #66ccff;
+    -fx-focus-color: #66ccff;
+    -fx-faint-focus-color: transparent;
+    -fx-text-fill: #cce6ff;
+}
+
+.label, .text, .text-area, .text-field {
+    -fx-text-fill: #cce6ff;
+}
+
+.button {
+    -fx-background-color: linear-gradient(#004488, #002255);
+    -fx-text-fill: white;
+    -fx-border-color: #66ccff;
+    -fx-border-width: 1;
+    -fx-background-radius: 5;
+}
+
+.button:hover {
+    -fx-background-color: #0055aa;
+}
+
+.toggle-button {
+    -fx-background-color: #003366;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #66ccff;
+}
+
+.toggle-button:selected {
+    -fx-background-color: #007acc;
+    -fx-text-fill: white;
+}
+
+.combo-box, .combo-box-base {
+    -fx-background-color: #003366;
+    -fx-border-color: #66ccff;
+    -fx-border-width: 1;
+    -fx-text-fill: #ffffff;
+}
+
+.combo-box .list-cell, .list-cell {
+    -fx-background-color: #002b5c;
+    -fx-text-fill: #cce6ff;
+}
+
+.list-cell:filled:selected, .list-cell:filled:selected:hover {
+    -fx-background-color: #0055aa;
+    -fx-text-fill: white;
+}
+
+.text-area {
+    -fx-control-inner-background: #001f3f;
+    -fx-background-color: #001f3f;
+    -fx-text-fill: #cce6ff;
+    -fx-border-color: #66ccff;
+}
+
+.table-view {
+    -fx-base: #001f3f;
+    -fx-control-inner-background: #001f3f;
+    -fx-background-color: #001f3f;
+    -fx-table-cell-border-color: #002b5c;
+    -fx-selection-bar: #0055aa;
+    -fx-selection-bar-non-focused: #003366;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-background-color: #003366;
+    -fx-border-color: #66ccff;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: #cce6ff;
+}
+
+.text-field {
+    -fx-background-color: #002244;
+    -fx-text-fill: #cce6ff;
+    -fx-border-color: #66ccff;
+}

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.wowmr.controller.MainController">
+
+    <top>
+        <VBox spacing="6">
+            <HBox spacing="10">
+                <padding><Insets top="10" right="10" bottom="0" left="10"/></padding>
+                <ToggleButton fx:id="homeToggle" text="🏠 Home"/>
+                <ToggleButton fx:id="farmToggle" text="🌾 Farm"/>
+                <Label text="Theme:"/>
+                <ComboBox fx:id="themeSelector" promptText="Choose theme">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="horde"/>
+                            <String fx:value="alliance"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+            </HBox>
+
+            <HBox spacing="8">
+                <padding><Insets top="8" right="10" bottom="8" left="10"/></padding>
+                <Label text="Zone:"/>
+                <ComboBox fx:id="instanceBox" promptText="Select a zone"/>
+                <Label text="Encounter:"/>
+                <ComboBox fx:id="encounterBox" promptText="Select an encounter"/>
+                <Label fx:id="statusLabel" text=""/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <StackPane fx:id="contentStack">
+
+            <!-- HOME VIEW -->
+            <BorderPane fx:id="homeView" visible="true">
+                <top>
+                    <HBox spacing="20" alignment="TOP_LEFT">
+                        <padding><Insets top="4" right="10" bottom="8" left="10"/></padding>
+                        <VBox fx:id="instanceInfoBox" spacing="10" prefWidth="300">
+                            <Label text="Instance Info" style="-fx-font-weight: bold;"/>
+                        </VBox>
+                        <VBox fx:id="encounterInfoBox" spacing="10" prefWidth="300">
+                            <Label text="Encounter Info" style="-fx-font-weight: bold;"/>
+                        </VBox>
+                    </HBox>
+                </top>
+
+                <center>
+                    <TableView fx:id="lootTable" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="itemCol" text="Item" prefWidth="180"/>
+                            <TableColumn fx:id="qtyCol" text="Qty" prefWidth="60"/>
+                            <TableColumn fx:id="rateCol" text="Drop %" prefWidth="70"/>
+                        </columns>
+                    </TableView>
+                </center>
+            </BorderPane>
+
+            <!-- FARM VIEW -->
+            <BorderPane fx:id="farmView" visible="false">
+                <left>
+                    <VBox spacing="10">
+                        <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+                        <HBox spacing="8">
+                            <Button fx:id="startStopButton" text="▶️ Start" onAction="#onStartStop"/>
+                            <Button fx:id="infoButton" text="ℹ️ Info" onAction="#onSessionInfo"/>
+                        </HBox>
+                        <Label fx:id="timerLabel" text="00:00:00" style="-fx-font-size:16px;"/>
+                        <Button fx:id="saveSessionButton" text="💾 Save Session" onAction="#onSaveSession"/>
+                    </VBox>
+                </left>
+
+                <center>
+                    <VBox spacing="8">
+                        <padding><Insets top="8" right="8" bottom="8" left="8"/></padding>
+                        <TextField fx:id="searchField"
+                                   promptText="Search sessions…" HBox.hgrow="ALWAYS"/>
+                        <TableView fx:id="sessionTable" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="dateCol" text="Date" prefWidth="120"/>
+                                <TableColumn fx:id="durationCol" text="Duration" prefWidth="80"/>
+                                <TableColumn fx:id="mobsCol" text="Mobs" prefWidth="60"/>
+                                <TableColumn fx:id="copperCol" text="Copper" prefWidth="60"/>
+                                <TableColumn fx:id="lootInfoCol" text="Info" prefWidth="60"/>
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </center>
+            </BorderPane>
+
+        </StackPane>
+    </center>
+
+</BorderPane>
