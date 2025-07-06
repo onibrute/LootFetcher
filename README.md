@@ -1,10 +1,8 @@
-# LootFetcher
-
-# WoWFetch 🎮📦
+# LootFetcher🎮📦
 
 ## Description
 
-**WoWFetch** is a desktop application built in Java that displays and stores loot session data from World of Warcraft, using the official Blizzard Game Data API and a custom in-game addon.  
+**LootFetcher** is a desktop application built in Java that displays and stores loot session data from World of Warcraft, using the official Blizzard Game Data API and a custom in-game addon.  
 The project integrates real-time gameplay events, local session tracking, and modern UI design to offer a centralized and immersive loot log experience for players.
 
 ---
