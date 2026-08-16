@@ -1,57 +1,192 @@
-# LootFetcher🎮📦
+# LootFetcher
 
-## Description
+A JavaFX desktop application for **World of Warcraft loot and farming-session tracking**. LootFetcher combines Blizzard Game Data API metadata, a companion Lua addon export, local SQLite persistence, and a themed desktop UI to centralize dungeon, encounter, loot, currency, and farming-session information.
 
-**LootFetcher** is a desktop application built in Java that displays and stores loot session data from World of Warcraft, using the official Blizzard Game Data API and a custom in-game addon.  
-The project integrates real-time gameplay events, local session tracking, and modern UI design to offer a centralized and immersive loot log experience for players.
+<p align="center">
+  <img src="docs/assets/app-overview.jpg" alt="LootFetcher desktop application" width="95%">
+</p>
 
----
+> **Portfolio scope:** this repository contains the Java desktop application. The companion `LootLogger` addon workflow is documented by the project and consumed through its `SavedVariables/LootLogger.lua` output, but the addon source itself is not currently included in this repository.
 
-## 🧩 Features
+## Highlights
 
-- 🗺️ Browse dungeons, bosses and official loot via Blizzard API  
-- 💾 Automatically log and save loot sessions from WoW using a custom Lua addon  
-- 🧠 Parse and process SavedVariables Lua files with LuaJ  
-- 🗃️ Store loot sessions (date, time, monsters, items, currency) in a local **SQLite** database  
-- 🎨 Dynamic theme switch (Horde / Alliance)  
-- 🔍 Filter and review farm sessions directly in the app
+- Browse World of Warcraft journal instances and encounters through the **Blizzard Game Data API**
+- Authenticate against Battle.net using **OAuth 2.0 client credentials**
+- Fetch instance, encounter, item, and media metadata
+- Import loot and currency data from a WoW `SavedVariables` Lua file using **LuaJ**
+- Track farming-session duration and save sessions locally with **SQLite**
+- Search and review previously recorded sessions
+- Switch between custom **Horde** and **Alliance** JavaFX themes
+- Maven-based build with JavaFX, Jackson, SQLite JDBC, and LuaJ
 
----
+## Architecture
 
-## 🔧 Technologies Used
+```text
+World of Warcraft
+       │
+       │ loot / currency events
+       ▼
+Companion LootLogger addon
+       │
+       ▼
+SavedVariables/LootLogger.lua
+       │
+       │ LuaJ parsing
+       ▼
+┌─────────────────────────────────────┐
+│        LootFetcher / JavaFX         │
+│                                     │
+│  Session tracking + themed UI       │
+│  Blizzard API integration           │
+│  Loot/currency import               │
+└───────────────┬─────────────┬───────┘
+                │             │
+                ▼             ▼
+             SQLite       Blizzard API
+          local history   OAuth 2.0 / REST
+```
 
-| Technology        | Purpose                                              |
-|-------------------|------------------------------------------------------|
-| **Java 21 + JavaFX**       | GUI interface                               |
-| **Blizzard Game Data API** | Fetch item/instance metadata                |
-| **OAuth 2.0**              | API authentication                          |
-| **SQLite**                 | Session database                            |
-| **LuaJ**                   | Parse in-game loot files (`LootLogger.lua`) |
-| **SceneBuilder**           | GUI layout design                           |
-| **Maven**                  | Dependency management                       |
-| **Lua Addon**              | Captures loot events in-game                |
+The desktop application acts as the integration layer between **locally generated gameplay data** and **official Blizzard metadata**. The project presentation documents the same workflow: the addon records loot into `SavedVariables`, JavaFX imports it through LuaJ, sessions are persisted locally, and Blizzard API responses enrich the UI with instance/encounter information.
 
----
+## Main workflow
 
+### 1. Browse official game data
 
-## 📂 Architecture Overview
+`BlizzardApiClient` authenticates with Battle.net and queries Blizzard journal endpoints for instances, encounters, item metadata, and media assets.
 
-                  +-------------------+
-                  |   WoW Lua Addon   |
-                  | (Interface/AddOns)|
-                  +-------------------+
-                           |
-                           v
-             +---------------------------------+
-             | LootLogger.lua (SavedVariables) |
-             +---------------------------------+
-                           |
-                           v
-         +----------------------------------------+
-         | WoWFetch Desktop App (JavaFX + LuaJ)   |
-         | - Parses .lua file                     |
-         | - Displays data in UI                  |
-         | - Saves sessions in SQLite             |
-         | - Requests item metadata via API       |
-         +----------------------------------------+
+### 2. Track a farming session
 
+The **Farm** view provides a session timer and stores recorded sessions with date, duration, loot, and currency information.
+
+### 3. Import gameplay loot
+
+The companion WoW addon writes loot information into `LootLogger.lua`. LootFetcher reads the latest exported session with LuaJ and converts currency into a normalized copper value before persistence.
+
+### 4. Persist and review sessions
+
+Session data is stored in a local SQLite database and can be searched and reviewed from the desktop interface.
+
+## Technology stack
+
+| Technology | Role |
+|---|---|
+| **Java 17** | Application language / Maven compiler target |
+| **JavaFX 21.0.2** | Desktop user interface |
+| **FXML + CSS** | UI layout and Horde/Alliance themes |
+| **Blizzard Game Data API** | Instance, encounter, item and media metadata |
+| **OAuth 2.0** | Battle.net API authentication |
+| **Jackson** | JSON parsing |
+| **SQLite / JDBC** | Local farming-session persistence |
+| **LuaJ** | Parsing `LootLogger.lua` SavedVariables |
+| **Maven** | Dependency management and build |
+
+## Configuration
+
+### Blizzard API credentials
+
+The application reads Blizzard credentials from environment variables rather than storing them in source code:
+
+```text
+BLIZZARD_CLIENT_ID
+BLIZZARD_CLIENT_SECRET
+```
+
+Create an API client in the Blizzard Developer Portal and expose the credentials in your local environment before starting the application.
+
+### LootLogger SavedVariables path
+
+Set the path to the Lua export generated by the companion addon:
+
+```text
+WOW_LOOTLOGGER_PATH
+```
+
+Example on Windows:
+
+```powershell
+$env:WOW_LOOTLOGGER_PATH="C:\path\to\World of Warcraft\_retail_\WTF\Account\<ACCOUNT>\SavedVariables\LootLogger.lua"
+```
+
+Alternatively, pass a JVM property:
+
+```text
+-Dwow.lootlogger.path="C:\path\to\LootLogger.lua"
+```
+
+This keeps machine-specific usernames, account folders, and installation paths out of the repository.
+
+## Build and run
+
+### Requirements
+
+- JDK 17+
+- Maven
+- Internet access for Blizzard API requests
+- Blizzard API credentials for API-backed views
+- `LootLogger.lua` only when importing gameplay loot
+
+Run directly with the JavaFX Maven plugin:
+
+```bash
+mvn clean javafx:run
+```
+
+Build the project:
+
+```bash
+mvn clean package
+```
+
+The Maven configuration also creates a JAR with dependencies during the package phase.
+
+## Repository structure
+
+```text
+.
+├── README.md
+├── pom.xml
+├── .gitignore
+├── docs/
+│   └── assets/
+│       └── app-overview.jpg
+└── src/
+    └── main/
+        ├── java/org/wowmr/
+        │   ├── api/          # Blizzard API + OAuth
+        │   ├── controller/   # JavaFX application logic
+        │   ├── db/           # SQLite persistence
+        │   ├── model/        # Domain records/models
+        │   └── util/         # LootLogger Lua parsing
+        └── resources/
+            ├── images/
+            ├── sounds/
+            ├── styles/       # Horde / Alliance themes
+            └── ui/           # FXML layout
+```
+
+## Current limitations
+
+- Blizzard's API does not expose complete loot information for every zone, encounter, or game context.
+- The current LootLogger import reads the latest addon-exported data rather than receiving live events directly from the game process.
+- Mob-kill count is not currently derived reliably from the addon export and therefore defaults to zero in the imported session model.
+- The companion addon source should be added to this repository in a future cleanup so the complete end-to-end workflow is reproducible from one checkout.
+
+## Possible next steps
+
+- Include the `LootLogger` addon source under an `addon/` directory
+- Add automatic SavedVariables discovery with a settings screen
+- Add CSV/JSON session export
+- Improve API response/error handling and token refresh behavior
+- Add unit tests for database and Lua parsing components
+- Package the desktop application as a native Windows distribution
+- Expand UI presets for Retail / Classic variants
+
+## Project context
+
+LootFetcher was developed as an academic software project focused on **desktop application development, REST API integration, local persistence, cross-language data exchange, and UI design**. The original project documentation describes Java/JavaFX, SQLite, Blizzard Game Data API integration, LuaJ parsing, Maven dependency management, themed interfaces, and the companion addon workflow.
+
+## Author
+
+**Robert Constantin Preda**
+
+World of Warcraft and Blizzard Entertainment are trademarks of Blizzard Entertainment, Inc. This project is an independent educational project and is not affiliated with or endorsed by Blizzard Entertainment.
