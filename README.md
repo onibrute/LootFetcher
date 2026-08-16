@@ -199,7 +199,7 @@ The Maven Assembly Plugin is configured to create a JAR with dependencies during
 
 ## Project context
 
-LootFetcher was developed as an academic software project focused on **desktop application development, REST API integration, local persistence, cross-language data exchange, and UI design**. The original presentation documents Java/JavaFX, SQLite, Blizzard API integration, LuaJ parsing, Maven dependency management, themed interfaces, farming-session history, and the companion addon workflow. fileciteturn85file0L32-L38 fileciteturn85file0L52-L64
+LootFetcher was developed as an academic software project focused on **desktop application development, REST API integration, local persistence, cross-language data exchange, and UI design**. The original presentation documents Java/JavaFX, SQLite, Blizzard API integration, LuaJ parsing, Maven dependency management, themed interfaces, farming-session history, and the companion addon workflow.
 
 ## Author
 
