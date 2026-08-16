@@ -2,9 +2,8 @@
 
 A JavaFX desktop application for **World of Warcraft loot and farming-session tracking**. LootFetcher combines official Blizzard Game Data API metadata, a companion Lua addon export, local SQLite persistence, and a themed desktop UI to centralize instance, encounter, loot, currency, and farming-session information.
 
-<p align="center">
-  <img src="docs/assets/app-overview.jpg" alt="LootFetcher desktop application" width="95%">
-</p>
+<img width="514" height="469" alt="image" src="https://github.com/user-attachments/assets/84fc1c1b-8a17-4671-a7ae-a7afc66a020d" />
+
 
 > **Portfolio scope:** this repository contains the Java desktop application. The companion `LootLogger` addon workflow is documented by the original project and consumed through `SavedVariables/LootLogger.lua`, but the addon source itself is not currently included in this repository.
 
