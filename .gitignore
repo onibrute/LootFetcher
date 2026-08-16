@@ -1,0 +1,25 @@
+# Maven build output
+/target/
+
+# Local application data
+/session_data.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# IDE metadata
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local configuration / secrets
+.env
+.env.*
+!.env.example
